@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <button class="add-customer-btn" onclick="openCustomerDetails()">Add Customer</button>
+        Customer List
+    </header>
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="customerList">
+            <!-- Customer data will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+      const baseUrl = "https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp";
+      let bearerToken = null;
+
+      // Function to handle login and get the bearer token
+      async function login() {
+        const url = "https://qa2.sunbasedata.com/sunbase/portal/api/assignment_auth.jsp";
+        const data = {
+          login_id: "test@sunbasedata.com",
+          password: "Test@123"
+        };
+
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            bearerToken = result.token;
+            getCustomerList(); // Fetch the customer list after successful login
+          } else {
+            console.error("Authentication failed");
+          }
+        } catch (error) {
+          console.error("Error occurred while authenticating:", error);
+        }
+      }
+
+      // Function to create a new customer
+      async function createCustomer(customerData) {
+        try {
+          const response = await fetch(`${baseUrl}?cmd=create`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${bearerToken}`
+            },
+            body: JSON.stringify(customerData)
+          });
+
+          if (response.ok) {
+            console.log("Customer created successfully");
+            getCustomerList(); // Refresh the customer list after creating a new customer
+          } else {
+            const result = await response.json();
+            console.error("Failed to create customer:", result.error);
+          }
+        } catch (error) {
+          console.error("Error occurred while creating customer:", error);
+        }
+      }
+
+      // Function to get the customer list
+      async function getCustomerList() {
+        try {
+          const response = await fetch(`${baseUrl}?cmd=get_customer_list`, {
+            headers: {
+              "Authorization": `Bearer ${bearerToken}`
+            }
+          });
+
+          if (response.ok) {
+            const customerList = await response.json();
+            displayCustomerList(customerList);
+          } else {
+            console.error("Failed to get customer list");
+          }
+        } catch (error) {
+          console.error("Error occurred while getting customer list:", error);
+        }
+      }
+
+      // Function to delete a customer
+      async function deleteCustomer(uuid) {
+        try {
+          const response = await fetch(`${baseUrl}?cmd=delete&uuid=${uuid}`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${bearerToken}`
+            }
+          });
+
+          if (response.ok) {
+            console.log("Customer deleted successfully");
+            getCustomerList(); // Refresh the customer list after deleting a customer
+          } else {
+            const result = await response.json();
+            console.error("Failed to delete customer:", result.error);
+          }
+        } catch (error) {
+          console.error("Error occurred while deleting customer:", error);
+        }
+      }
+
+      // Function to display the customer list in the table
+      function displayCustomerList(customers) {
+        const customerListElement = document.getElementById("customerList");
+        customerListElement.innerHTML = "";
+
+        customers.forEach(customer => {
+          const row = document.createElement("tr");
+          const keys = ["first_name", "last_name", "street", "address", "city", "state", "email", "phone"];
+
+          keys.forEach(key => {
+            const cell = document.createElement("td");
+            cell.textContent = customer[key];
+            row.appendChild(cell);
+          });
+
+          const actionCell = document.createElement("td");
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "Delete";
+          deleteButton.onclick = () => deleteCustomer(customer.uuid);
+          actionCell.appendChild(deleteButton);
+
+          row.appendChild(actionCell);
+
+          customerListElement.appendChild(row);
+        });
+      }
+
+      // Function to open the Customer Details page in a new window
+      function openCustomerDetails() {
+        window.open("customer_details.html", "_blank");
+      }
+
+      // Call the login function to authenticate and get the bearer token
+      login();
+    </script>
+</body>
+</html>
