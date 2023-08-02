@@ -15,51 +15,7 @@
         <input type="text" name="state" placeholder="State">
         <input type="email" name="email" placeholder="Email">
         <input type="tel" name="phone" placeholder="Phone">
-        <input type="submit" value="Submit" onclick="createNewCustomer(event)">
+        <input type="submit" value="Submit"">
     </form>
-
-    <script>
-      const baseUrl = "https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp";
-      const authToken = "YOUR_BEARER_TOKEN"; // Replace this with the bearer token received from the authentication API
-
-      // Function to create a new customer
-      async function createNewCustomer(event) {
-        event.preventDefault();
-        const form = document.getElementById("customerForm");
-        const formData = new FormData(form);
-        const customerData = {};
-
-        formData.forEach((value, key) => {
-          customerData[key] = value;
-        });
-
-        if (!customerData.first_name || !customerData.last_name) {
-          alert("First Name and Last Name are mandatory fields.");
-          return;
-        }
-
-        try {
-          const response = await fetch(`${baseUrl}?cmd=create`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${authToken}`
-            },
-            body: JSON.stringify(customerData)
-          });
-
-          if (response.status === 201) {
-            console.log("Customer created successfully");
-          } else if (response.status === 400) {
-            const result = await response.json();
-            console.error("Failed to create customer:", result.error);
-          } else {
-            console.error("Unexpected error occurred:", response.statusText);
-          }
-        } catch (error) {
-          console.error("Error occurred while creating customer:", error);
-        }
-      }
-    </script>
 </body>
 </html>
