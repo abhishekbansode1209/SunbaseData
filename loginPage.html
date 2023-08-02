@@ -11,47 +11,5 @@
         <input type="password" name="password" placeholder="Password" required>
         <input type="submit" value="Submit">
     </form>
-
-    <script>
-      const baseUrl = "https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp";
-      let bearerToken = null;
-
-      // Function to handle login and get the bearer token
-      async function login(event) {
-        event.preventDefault();
-        const form = document.getElementById("loginForm");
-        const formData = new FormData(form);
-        const loginData = {};
-
-        formData.forEach((value, key) => {
-          loginData[key] = value;
-        });
-
-        try {
-          const response = await fetch("https://qa2.sunbasedata.com/sunbase/portal/api/assignment_auth.jsp", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(loginData)
-          });
-
-          if (response.ok) {
-            const result = await response.json();
-            bearerToken = result.token;
-            // After successful login, you can redirect to the next page or call further API functions
-            // For this example, I will just display the token in the console.
-            console.log("Bearer Token:", bearerToken);
-          } else {
-            console.error("Authentication failed");
-          }
-        } catch (error) {
-          console.error("Error occurred while authenticating:", error);
-        }
-      }
-
-      // Attach the login function to the form's submit event
-      document.getElementById("loginForm").addEventListener("submit", login);
-    </script>
 </body>
 </html>
