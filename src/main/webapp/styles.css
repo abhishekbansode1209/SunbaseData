@@ -1,0 +1,121 @@
+/* Global Styles */
+body {
+  font-family: "Times New Roman", Times, serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+header {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: lightblue;
+  border-radius: 5px 5px 0 0;
+  text-align: center;
+}
+
+/* Login Page Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="submit"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+  background-color: #1877F2;
+  cursor: pointer;
+  border: none;
+  color: white;
+}
+
+/* Customer List Page Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th,
+td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.add-customer-btn {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #1877F2;
+  color: white;
+  cursor: pointer;
+}
+
+/* Customer Details Page Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="submit"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+  background-color: #1877F2;
+  cursor: pointer;
+  border: none;
+  color: white;
+}
+
+/* Styles for the "Edit" and "Delete" buttons in the action column */
+.edit-btn {
+  background-color: #2196F3;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  margin-right: 5px;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  margin-right: 5px;
+}
+
+/* On hover, change the background color of the buttons */
+.edit-btn:hover, .delete-btn:hover {
+  background-color: #0a7dda;
+}
+
+/* Add some spacing between the buttons */
+.edit-btn + .delete-btn {
+  margin-left: 5px;
+}
